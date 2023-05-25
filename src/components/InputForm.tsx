@@ -1,9 +1,13 @@
-import { Card, Dropdown, Option, useId } from '@fluentui/react-components';
+import { Button, Card, Dropdown, Option, useId } from '@fluentui/react-components';
 import React, { useState } from 'react';
-import { fetchCategories, fetchDirections, fetchEnters, fetchExits } from '../api';
-import { Category, Direction, OptionOnSelectData } from '../model';
+import { calculateTolls, fetchCategories, fetchDirections, fetchEnters, fetchExits } from '../api';
+import { Category, Direction, OptionOnSelectData, TollCost } from '../model';
 
-export function InputForm() {
+type InputFormProps = {
+    setResults: (data: TollCost[]) => void;
+};
+
+export function InputForm({ setResults }: InputFormProps) {
     const directionDropdownId = useId('direction-dropdown');
     const enterDropdownId = useId('enter-dropdown');
     const exitDropdownId = useId('exit-dropdown');
@@ -67,9 +71,22 @@ export function InputForm() {
         setExitSelected(data.selectedOptions);
     };
 
+    const isFormValid = (): boolean => {
+        return !!selectedDirection && !!enterValue && !!exitValue && !!selectedCategory;
+    };
+
+    const calculate = () => {
+        calculateTolls(
+            Number(selectedDirection?.optionValue),
+            enterValue,
+            exitValue,
+            Number(selectedCategory?.optionValue),
+        ).then((data) => setResults(data));
+    };
+
     return (
         <Card>
-            <label id={directionDropdownId}>Direction</label>
+            <label id={directionDropdownId}>Κατεύθυνση</label>
             <Dropdown
                 disabled={directions && directions.length == 0}
                 onOptionSelect={onDirectionOptionSelect}
@@ -83,7 +100,7 @@ export function InputForm() {
                 ))}
             </Dropdown>
 
-            <label id={enterDropdownId}>Enter Station</label>
+            <label id={enterDropdownId}>Είσοδος</label>
             <Dropdown
                 disabled={enters.length == 0}
                 aria-labelledby={enterDropdownId}
@@ -97,7 +114,7 @@ export function InputForm() {
                 ))}
             </Dropdown>
 
-            <label id={exitDropdownId}>Exit Station</label>
+            <label id={exitDropdownId}>Έξοδος</label>
             <Dropdown
                 disabled={exits.length == 0}
                 aria-labelledby={exitDropdownId}
@@ -111,7 +128,7 @@ export function InputForm() {
                 ))}
             </Dropdown>
 
-            <label id={categoryDropdownId}>Category</label>
+            <label id={categoryDropdownId}>Κατηγορία</label>
             <Dropdown
                 aria-labelledby={categoryDropdownId}
                 placeholder='Select a category'
@@ -123,6 +140,10 @@ export function InputForm() {
                     </Option>
                 ))}
             </Dropdown>
+
+            <Button onClick={calculate} disabled={!isFormValid()} appearance='primary'>
+                Υπολογισμός
+            </Button>
         </Card>
     );
 }

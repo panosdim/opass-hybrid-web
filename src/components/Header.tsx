@@ -24,7 +24,7 @@ export function Header() {
         <Card className={styles.card}>
             <div className={styles.header}>
                 <img className={styles.headerImage} src={logo} alt='Opass Calculator Logo' />
-                <Display align='center'>Opass Calculator</Display>
+                <Display align='center'>Opass Hybrid</Display>
             </div>
         </Card>
     );

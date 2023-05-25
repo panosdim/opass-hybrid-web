@@ -1,5 +1,3 @@
-export const baseUrl = 'http://localhost:8080/api';
-
 export type Direction = {
     id: number;
     name: string;
@@ -8,6 +6,11 @@ export type Direction = {
 export type Category = {
     id: number;
     name: string;
+};
+
+export type TollCost = {
+    station: string;
+    cost: number;
 };
 
 export type OptionOnSelectData = {

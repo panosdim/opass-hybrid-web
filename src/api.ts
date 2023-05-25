@@ -1,4 +1,5 @@
-import { Category, Direction, baseUrl } from './model';
+import { Category, Direction, TollCost } from './model';
+import { baseUrl } from './utils';
 
 export function fetchDirections(): Promise<Direction[]> {
     const options = {
@@ -53,6 +54,25 @@ export function fetchExits(direction: number, enter: string): Promise<string[]> 
         }),
     };
     return fetch(baseUrl + '/exits', options)
+        .then((response) => response.json())
+        .catch((error) => console.log(error));
+}
+
+export function calculateTolls(direction: number, enter: string, exit: string, category: number): Promise<TollCost[]> {
+    const options = {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json;charset=UTF-8',
+        },
+        body: JSON.stringify({
+            direction: direction,
+            enter: enter,
+            exit: exit,
+            category: category,
+        }),
+    };
+    return fetch(baseUrl + '/tolls', options)
         .then((response) => response.json())
         .catch((error) => console.log(error));
 }
