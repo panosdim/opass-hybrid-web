@@ -39,7 +39,7 @@ export function DiscountResults({ results }: DiscountResultsProps) {
                     <Subtitle2 align='center'>Αριθμός Ημερήσιων Διελευσεων 2</Subtitle2>
                     <div className={styles.grid}>
                         {MONTHS.map((month: string, index: number) => (
-                            <div className={styles.flex}>
+                            <div key={month} className={styles.flex}>
                                 <Text size={500} weight='bold'>
                                     {month}
                                 </Text>

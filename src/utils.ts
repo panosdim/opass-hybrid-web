@@ -1,4 +1,4 @@
-export const baseUrl = 'http://localhost:8080/api';
+export const baseUrl = 'https://opass.dsw.mywire.org/api';
 
 function getDiscount(pass: number): number {
     if (pass >= 0 && pass <= 5) {

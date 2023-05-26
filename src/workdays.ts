@@ -85,8 +85,10 @@ const isBetween = (date: Date, from: Date, to: Date, inclusively = '[]') => {
 
 export function getWorkingDays(month: number): number {
     const now = new Date();
-    const curMonth = setMonth(new Date(), month);
-    let businessDays = differenceInBusinessDays(endOfMonth(curMonth), startOfMonth(curMonth));
+    const curMonth = setMonth(now, month);
+    const nextMonth = add(endOfMonth(curMonth), { days: 1 });
+
+    let businessDays = differenceInBusinessDays(startOfMonth(nextMonth), startOfMonth(curMonth));
 
     const holidays = getBankHolidays(now.getFullYear());
 
